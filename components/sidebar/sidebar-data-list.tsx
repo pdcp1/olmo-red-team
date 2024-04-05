@@ -21,6 +21,8 @@ import { ModelItem } from "./items/models/model-item"
 import { PresetItem } from "./items/presets/preset-item"
 import { PromptItem } from "./items/prompts/prompt-item"
 import { ToolItem } from "./items/tools/tool-item"
+import { DSRILogoSVG } from "@/components/icons/dsri-logo-svg"
+import { useTheme } from "next-themes"
 
 interface SidebarDataListProps {
   contentType: ContentType
@@ -43,6 +45,8 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
     setTools,
     setModels
   } = useContext(ChatbotUIContext)
+
+  const { theme } = useTheme()
 
   const divRef = useRef<HTMLDivElement>(null)
 
@@ -333,12 +337,16 @@ export const SidebarDataList: FC<SidebarDataListProps> = ({
       </div>
 
       <div
-        className={cn("flex grow", isDragOver && "bg-accent")}
+        className={cn("flex grow flex-col-reverse", isDragOver && "bg-accent")}
         onDrop={handleDrop}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
-      />
+      >
+        <div className="flex justify-center pb-3 sm:pb-4">
+          <DSRILogoSVG theme={theme === "dark" ? "dark" : "light"} scale={0.8} />
+        </div>
+      </div>
     </>
   )
 }
