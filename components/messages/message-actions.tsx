@@ -1,5 +1,5 @@
 import { ChatbotUIContext } from "@/context/context"
-import { IconCheck, IconCopy, IconEdit, IconRepeat } from "@tabler/icons-react"
+import { IconCheck, IconCopy, IconEdit, IconFlag /*, IconRepeat*/ } from "@tabler/icons-react"
 import { FC, useContext, useEffect, useState } from "react"
 import { WithTooltip } from "../ui/with-tooltip"
 
@@ -13,6 +13,7 @@ interface MessageActionsProps {
   onCopy: () => void
   onEdit: () => void
   onRegenerate: () => void
+  onFlag: () => void
 }
 
 export const MessageActions: FC<MessageActionsProps> = ({
@@ -22,7 +23,8 @@ export const MessageActions: FC<MessageActionsProps> = ({
   isHovering,
   onCopy,
   onEdit,
-  onRegenerate
+  //onRegenerate,
+  onFlag,
 }) => {
   const { isGenerating } = useContext(ChatbotUIContext)
 
@@ -33,7 +35,7 @@ export const MessageActions: FC<MessageActionsProps> = ({
     setShowCheckmark(true)
   }
 
-  const handleForkChat = async () => {}
+  //const handleForkChat = async () => {}
 
   useEffect(() => {
     if (showCheckmark) {
@@ -96,7 +98,7 @@ export const MessageActions: FC<MessageActionsProps> = ({
         />
       )}
 
-      {isLast && (
+      {/* {isLast && (
         <WithTooltip
           delayDuration={1000}
           side="bottom"
@@ -107,6 +109,23 @@ export const MessageActions: FC<MessageActionsProps> = ({
               size={MESSAGE_ICON_SIZE}
               onClick={onRegenerate}
             />
+          }
+        />
+      )} */}
+
+      {isAssistant && (
+        <WithTooltip
+          delayDuration={1000}
+          side="bottom"
+          display={<div>Flag / Annotate</div>}
+          trigger={
+            <div
+              className="flex cursor-pointer gap-1 hover:opacity-50"
+              onClick={onFlag}
+            >
+              <IconFlag size={MESSAGE_ICON_SIZE} />
+              <div className="text-xs">Flag / Annotate</div>
+            </div>
           }
         />
       )}

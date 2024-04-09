@@ -23,6 +23,16 @@ import { TextareaAutosize } from "../ui/textarea-autosize"
 import { WithTooltip } from "../ui/with-tooltip"
 import { MessageActions } from "./message-actions"
 import { MessageMarkdown } from "./message-markdown"
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 
 const ICON_SIZE = 32
 
@@ -78,6 +88,8 @@ export const Message: FC<MessageProps> = ({
 
   const [viewSources, setViewSources] = useState(false)
 
+  const [showFlagDialog, setShowFlagDialog] = useState(false)
+
   const handleCopy = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(message.content)
@@ -114,6 +126,10 @@ export const Message: FC<MessageProps> = ({
 
   const handleStartEdit = () => {
     onStartEdit(message)
+  }
+
+  const handleStartFlag = () => {
+    setShowFlagDialog(true);
   }
 
   useEffect(() => {
@@ -194,6 +210,7 @@ export const Message: FC<MessageProps> = ({
           <MessageActions
             onCopy={handleCopy}
             onEdit={handleStartEdit}
+            onFlag={handleStartFlag}
             isAssistant={message.role === "assistant"}
             isLast={isLast}
             isEditing={isEditing}
@@ -440,6 +457,38 @@ export const Message: FC<MessageProps> = ({
           }}
         />
       )}
+
+      <Dialog open={showFlagDialog} onOpenChange={setShowFlagDialog}>
+        <DialogContent onKeyDown={handleKeyDown}>
+          <DialogHeader>
+            <DialogTitle>Flag / Annotate</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <div><Label>Response</Label></div>
+            <div className="bg-accent rounded-md p-3">
+              <MessageMarkdown content={message.content} />
+            </div>
+
+            <div><Label>Notes / Why are you flagging this response?</Label></div>
+            <div><Textarea  /></div>
+            {/* <div><Input value={''} onChange={e => setName(e.target.value)} /></div> */}
+
+            <div><Label>Keywords/Tags</Label></div>
+            <div>TBD</div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setShowFlagDialog(false)}>
+              Cancel
+            </Button>
+
+            <Button onClick={() => { alert('Flagged!'); setShowFlagDialog(false) }}>
+              Submit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
