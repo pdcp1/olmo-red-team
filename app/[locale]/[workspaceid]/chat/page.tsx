@@ -3,6 +3,7 @@
 import { ChatHelp } from "@/components/chat/chat-help"
 import { useChatHandler } from "@/components/chat/chat-hooks/use-chat-handler"
 import { ChatInput } from "@/components/chat/chat-input"
+import { ChatInstructions } from "@/components/chat/chat-instructions"
 import { ChatSettings } from "@/components/chat/chat-settings"
 import { ChatUI } from "@/components/chat/chat-ui"
 import { QuickSettings } from "@/components/chat/quick-settings"
@@ -46,8 +47,12 @@ export default function ChatPage() {
             <ChatInput />
           </div>
 
-          <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
+          {/* <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
             <ChatHelp />
+          </div> */}
+
+          <div className="w-full min-w-[300px] items-end px-2 pb-3 pt-0 sm:w-[700px] sm:pb-8 md:w-[800px] lg:w-[800px] xl:w-[900px]">
+            <ChatInstructions />
           </div>
         </div>
       ) : (

@@ -12,16 +12,17 @@ import useHotkey from "@/lib/hooks/use-hotkey"
 import { LLMID, MessageImage } from "@/types"
 import { useParams } from "next/navigation"
 import { FC, useContext, useEffect, useState } from "react"
-import { ChatHelp } from "./chat-help"
+//import { ChatHelp } from "./chat-help"
 import { useScroll } from "./chat-hooks/use-scroll"
 import { ChatInput } from "./chat-input"
 import { ChatMessages } from "./chat-messages"
 import { ChatScrollButtons } from "./chat-scroll-buttons"
 import { ChatSecondaryButtons } from "./chat-secondary-buttons"
+import { ChatInstructions } from "./chat-instructions"
 
-interface ChatUIProps {}
+interface ChatUIProps { }
 
-export const ChatUI: FC<ChatUIProps> = ({}) => {
+export const ChatUI: FC<ChatUIProps> = ({ }) => {
   useHotkey("o", () => handleNewChat())
 
   const params = useParams()
@@ -222,8 +223,12 @@ export const ChatUI: FC<ChatUIProps> = ({}) => {
         <ChatInput />
       </div>
 
-      <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
+      {/* <div className="absolute bottom-2 right-2 hidden md:block lg:bottom-4 lg:right-4">
         <ChatHelp />
+      </div> */}
+
+      <div className="w-full min-w-[300px] items-end px-2 pb-3 pt-0 sm:w-[700px] sm:pb-8 md:w-[800px] lg:w-[800px] xl:w-[900px]">
+        <ChatInstructions />
       </div>
     </div>
   )
