@@ -34,11 +34,11 @@ export default function ChatPage() {
           </div>
 
           <div className="absolute left-2 top-2">
-            <QuickSettings />
+            {/* <QuickSettings /> */}
           </div>
 
           <div className="absolute right-2 top-2">
-            <ChatSettings />
+            {/* <ChatSettings /> */}
           </div>
 
           <div className="flex grow flex-col items-center justify-center" />
