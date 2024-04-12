@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { createMessageAnnotation } from "@/db/message-annotations"
+import { toast } from "sonner"
 
 const ICON_SIZE = 32
 
@@ -89,6 +91,7 @@ export const Message: FC<MessageProps> = ({
   const [viewSources, setViewSources] = useState(false)
 
   const [showFlagDialog, setShowFlagDialog] = useState(false)
+  const [messageAnnotationReason, setMessageAnnotationReason] = useState('');
 
   const handleCopy = () => {
     if (navigator.clipboard) {
@@ -130,6 +133,16 @@ export const Message: FC<MessageProps> = ({
 
   const handleStartFlag = () => {
     setShowFlagDialog(true);
+  }
+
+  const handleFlagMessage = async () => {
+    await createMessageAnnotation({
+      message_id: message.id,
+      user_id: profile ? profile.user_id : '',
+      reason: messageAnnotationReason,
+    });
+    setShowFlagDialog(false);
+    toast.success("Message flagged / annnotated successfully!")
   }
 
   useEffect(() => {
@@ -274,8 +287,8 @@ export const Message: FC<MessageProps> = ({
                 {message.role === "assistant"
                   ? message.assistant_id
                     ? assistants.find(
-                        assistant => assistant.id === message.assistant_id
-                      )?.name
+                      assistant => assistant.id === message.assistant_id
+                    )?.name
                     : selectedAssistant
                       ? selectedAssistant?.name
                       : MODEL_DATA?.modelName
@@ -284,9 +297,9 @@ export const Message: FC<MessageProps> = ({
             </div>
           )}
           {!firstTokenReceived &&
-          isGenerating &&
-          isLast &&
-          message.role === "assistant" ? (
+            isGenerating &&
+            isLast &&
+            message.role === "assistant" ? (
             <>
               {(() => {
                 switch (toolInUse) {
@@ -471,8 +484,11 @@ export const Message: FC<MessageProps> = ({
             </div>
 
             <div><Label>Notes / Why are you flagging this response?</Label></div>
-            <div><Textarea  /></div>
-            {/* <div><Input value={''} onChange={e => setName(e.target.value)} /></div> */}
+            <div>
+              <Textarea
+                value={messageAnnotationReason}
+                onChange={e => setMessageAnnotationReason(e.target.value)} />
+            </div>
 
             <div><Label>Keywords/Tags</Label></div>
             <div>TBD</div>
@@ -483,7 +499,7 @@ export const Message: FC<MessageProps> = ({
               Cancel
             </Button>
 
-            <Button onClick={() => { alert('Flagged!'); setShowFlagDialog(false) }}>
+            <Button onClick={handleFlagMessage}>
               Submit
             </Button>
           </DialogFooter>
